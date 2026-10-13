@@ -1,7 +1,10 @@
+# Workflow principal (caller): reemplaza el contenido de tu workflow actual con esto
 name: Deploy to Google Cloud Run - Reuse Workflow
+
 on:
   push:
     branches: [ main ]
+  workflow_dispatch:
 
 permissions:
   id-token: write
@@ -9,9 +12,11 @@ permissions:
 
 jobs:
   workflow:
-    uses: aldower/dso-templates/.github/workflows/angular.yaml@main
+    uses: ./.github/workflows/angular-reuse.yaml
     with:
-      gcp_project_id: "hale-monument-477117-k8"
-      gcp_artifact_repo: "cna-registry"
-      cr_service_name: "gemini-angular-app"
+      gcp_project_id: "utec-posgrado-01"
+      gcp_artifact_repo: "app-jpalma"
+      cr_service_name: "gemini-angular-jpalma"   # => gemini-angular-jpalma-dev / -qa
+      runtime_sa: "cloud-run-jpalma@utec-posgrado-01.iam.gserviceaccount.com"
+      canary_percent: 15
     secrets: inherit
